@@ -82,13 +82,13 @@ t_vertex	**fill_vertex_matrix(t_vertex **vertex_matrix, char ***string_matrix)
 	return (vertex_matrix);
 }
 
-void	draw_map(const t_data * const data, t_vertex **v_matrix, size_t width, size_t height)
+void	draw_map(const t_data * const data, t_vertex **v_matrix, ssize_t width, ssize_t height)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while ((i < eight) && (i + 1 <= eight))
+	while ((i < height) && (i + 1 <= height))
 	{
 		j = 0;
 		while ((j < width) && (j + 1 <= width))
@@ -100,7 +100,7 @@ void	draw_map(const t_data * const data, t_vertex **v_matrix, size_t width, size
 		draw_line(data, v_matrix[i][j], v_matrix[i + 1][j]);
 		i++;
 	}
-	if (i == eight)
+	if (i == height)
 	{
 		j = 0;
 		while ((j < width) && (j + 1 <= width))
@@ -109,6 +109,5 @@ void	draw_map(const t_data * const data, t_vertex **v_matrix, size_t width, size
 			j++;
 		}
 	}
-	return (vertex_matrix);
 }
 
