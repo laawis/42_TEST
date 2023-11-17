@@ -102,9 +102,12 @@ void	draw_map(const t_data * const data, t_vertex **v_matrix, size_t width, size
 	}
 	if (i == eight)
 	{
+		j = 0;
 		while ((j < width) && (j + 1 <= width))
-		draw_line(data, v_matrix[i][j], v_matrix[i][j + 1]);
-		j++;
+		{
+			draw_line(data, v_matrix[i][j], v_matrix[i][j + 1]);
+			j++;
+		}
 	}
 	return (vertex_matrix);
 }
