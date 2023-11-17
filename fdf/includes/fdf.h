@@ -57,5 +57,6 @@ t_vertex	**alloc_vertex_matrix(size_t width, size_t height);
 t_vertex	**fill_vertex_matrix(t_vertex **vertex_matrix, char ***string_matrix);
 void		print_vertex_matrix(t_vertex **const vertex_matrix, size_t width, size_t height);
 void		draw_line(const t_data *const data, t_vertex *v1, t_vertex *v2);
+void		draw_map(const t_data * const data, t_vertex **v_matrix, ssize_t *height, ssize_t *width);
 
 #endif

@@ -82,32 +82,31 @@ t_vertex	**fill_vertex_matrix(t_vertex **vertex_matrix, char ***string_matrix)
 	return (vertex_matrix);
 }
 
-void	draw_map(const t_data * const data, t_vertex **v_matrix, ssize_t width, ssize_t height)
+void	draw_map(const t_data * const data, t_vertex **v_matrix, ssize_t *height, ssize_t *width)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while ((i < height) && (i + 1 <= height))
+	while ((i < *height) && (i + 1 <= *height))
 	{
 		j = 0;
-		while ((j < width) && (j + 1 <= width))
+		while ((j < *width) && (j + 1 <= *width))
 		{
-			draw_line(data, v_matrix[i][j], v_matrix[i + 1][j]);
-			draw_line(data, v_matrix[i][j], v_matrix[i][j + 1]);
+			draw_line(data, &v_matrix[i][j], &v_matrix[i + 1][j]);
+			draw_line(data, &v_matrix[i][j], &v_matrix[i][j + 1]);
 			j++;
 		}
-		draw_line(data, v_matrix[i][j], v_matrix[i + 1][j]);
+		draw_line(data, &v_matrix[i][j], &v_matrix[i + 1][j]);
 		i++;
 	}
-	if (i == height)
+	if (i == *height)
 	{
 		j = 0;
-		while ((j < width) && (j + 1 <= width))
+		while ((j < *width) && (j + 1 <= *width))
 		{
-			draw_line(data, v_matrix[i][j], v_matrix[i][j + 1]);
+			draw_line(data, &v_matrix[i][j], &v_matrix[i][j + 1]);
 			j++;
 		}
 	}
 }
-
