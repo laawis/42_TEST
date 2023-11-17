@@ -88,21 +88,24 @@ void	draw_map(const t_data * const data, t_vertex **v_matrix, size_t width, size
 	int	j;
 
 	i = 0;
-	while (i <= eight)
+	while ((i < eight) && (i + 1 <= eight))
 	{
 		j = 0;
-		while ((j <= width) && (j + 1 <= width))
+		while ((j < width) && (j + 1 <= width))
 		{
+			draw_line(data, v_matrix[i][j], v_matrix[i + 1][j]);
 			draw_line(data, v_matrix[i][j], v_matrix[i][j + 1]);
-			// vertex_matrix[i][j].y = i;
-			// vertex_matrix[i][j].x = j;
-			// vertex_matrix[i][j].w = ft_atoi(string_matrix[i][j]);
 			j++;
 		}
+		draw_line(data, v_matrix[i][j], v_matrix[i + 1][j]);
 		i++;
+	}
+	if (i == eight)
+	{
+		while ((j < width) && (j + 1 <= width))
+		draw_line(data, v_matrix[i][j], v_matrix[i][j + 1]);
+		j++;
 	}
 	return (vertex_matrix);
 }
-
-
 
