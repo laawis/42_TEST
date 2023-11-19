@@ -66,3 +66,32 @@ void	draw_line(const t_data *const data, t_vertex *v1, t_vertex *v2)
 		}
 	}
 }
+
+void	draw_map(const t_data * const data, t_vertex **v_matrix, ssize_t *height, ssize_t *width)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while ((i < *height) && ((i + 1) <= *height))
+	{
+		j = 0;
+		while ((j < *width) && ((j + 1) <= *width))
+		{
+			draw_line(data, &v_matrix[i][j], &v_matrix[i + 1][j]);
+			draw_line(data, &v_matrix[i][j], &v_matrix[i][j + 1]);
+			j++;
+		}
+		draw_line(data, &v_matrix[i][j], &v_matrix[i + 1][j]);
+		i++;
+	}
+	if (i == *height)
+	{
+		j = 0;
+		while ((j < *width) && ((j + 1) <= *width))
+		{
+			draw_line(data, &v_matrix[i][j], &v_matrix[i][j + 1]);
+			j++;
+		}
+	}
+}
