@@ -55,6 +55,7 @@ void	print_vertex_matrix(t_vertex **const vertex_matrix, size_t width, size_t he
 		printf("\n");
 		i++;
 	}
+/*
 	ft_printf("\n");
 	i = 0;
 	while (i < height)
@@ -70,6 +71,6 @@ void	print_vertex_matrix(t_vertex **const vertex_matrix, size_t width, size_t he
 		printf("\n");
 		i++;
 	}
-
+*/
 	printf("\n");
 }

@@ -38,6 +38,7 @@ void	draw_line(const t_data *const data, t_vertex *v1, t_vertex *v2)
 	int	error;
 	int e2;
 
+	printf("v1{%d;%d;%d} v2{%d;%d;%d}", v1->x, v1->y, v1->w, v2->x,v2->y, v2->w);
 	dx = abs(v2->x - v1->x);
 	sx = v1->x < v2->x ? 1 : -1;
 	dy = -abs(v2->y - v1->y);
@@ -72,26 +73,29 @@ void	draw_map(const t_data *const data, t_vertex **v_matrix, ssize_t *height, ss
 	int	i;
 	int	j;
 
+	printf("width=%zd; height=%zd \n", *width, *height);
 	i = 0;
-	while ((i < *height) && ((i + 1) <= *height))
+	while (i < (*height))
 	{
 		j = 0;
-		while ((j < *width) && ((j + 1) <= *width))
+		while (j < (*width - 1))
 		{
-			draw_line(data, &v_matrix[i][j], &v_matrix[i + 1][j]);
 			draw_line(data, &v_matrix[i][j], &v_matrix[i][j + 1]);
-			j++;
+			//draw_line(data, &v_matrix[i][j + 1], &v_matrix[i + 1][j + 1]);
+			j++;			
 		}
-		draw_line(data, &v_matrix[i][j], &v_matrix[i + 1][j]);
+		printf("\n");
 		i++;
 	}
-	if (i == *height)
+/*
+	if (i == *height - 1)
 	{
 		j = 0;
-		while ((j < *width) && ((j + 1) <= *width))
+		while (j < *width - 1))
 		{
 			draw_line(data, &v_matrix[i][j], &v_matrix[i][j + 1]);
 			j++;
 		}
 	}
+*/
 }

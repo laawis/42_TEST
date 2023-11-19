@@ -35,7 +35,7 @@ static t_vertex	**get_map(char *const filename, ssize_t *height, ssize_t *width)
 	if (height < 0)
 		return (NULL);
 	string_matrix = get_matrix_altitude(filename, *height);
-	//print_matrix_altitude(string_matrix);
+	print_matrix_altitude(string_matrix);
 	*width = get_width(string_matrix);
 	if (width < 0)
 		return (NULL);
@@ -43,7 +43,7 @@ static t_vertex	**get_map(char *const filename, ssize_t *height, ssize_t *width)
 	if (vertex_matrix == NULL)
 		return (NULL);
 	fill_vertex_matrix(vertex_matrix, string_matrix);
-	//print_vertex_matrix(vertex_matrix, width, height);
+	print_vertex_matrix(vertex_matrix, *width, *height);
 	free_matrix_altitude(string_matrix);
 	(void)string_matrix;
 	return (vertex_matrix);
