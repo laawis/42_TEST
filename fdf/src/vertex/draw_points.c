@@ -67,7 +67,7 @@ void	draw_line(const t_data *const data, t_vertex *v1, t_vertex *v2)
 	}
 }
 
-void	draw_map(const t_data * const data, t_vertex **v_matrix, ssize_t *height, ssize_t *width)
+void	draw_map(const t_data *const data, t_vertex **v_matrix, ssize_t *height, ssize_t *width)
 {
 	int	i;
 	int	j;
