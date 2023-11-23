@@ -25,56 +25,68 @@
 - Matrice 3x3 et 4x4
 - Algorithme de brensham (tracer des lignes)
 */
-
-static t_vertex	**get_map(char *const filename, ssize_t *height, ssize_t *width)
+static int	get_map(char *const filename, t_map *map)
 {
 	char		***string_matrix;
-	t_vertex	**vertex_matrix;
 
-	*height = get_line_number(filename);
-	if (height < 0)
-		return (NULL);
-	string_matrix = get_matrix_altitude(filename, *height);
-	print_matrix_altitude(string_matrix);
-	*width = get_width(string_matrix);
-	if (width < 0)
-		return (NULL);
-	vertex_matrix = alloc_vertex_matrix(*width, *height);
-	if (vertex_matrix == NULL)
-		return (NULL);
-	fill_vertex_matrix(vertex_matrix, string_matrix);
-	print_vertex_matrix(vertex_matrix, *width, *height);
+	map->height = get_line_number(filename);
+	if (map->height < 0)
+		return (-1);
+	string_matrix = get_matrix_altitude(filename, map->height);
+	//print_matrix_altitude(string_matrix);
+	map->width = get_width(string_matrix);
+	if (map->width < 0)
+		return (-1);
+	map->v_matrix = alloc_vertex_matrix(map->width, map->height);
+	if (map->v_matrix == NULL)
+		return (-1);
+	fill_vertex_matrix(map->v_matrix, string_matrix);
 	free_matrix_altitude(string_matrix);
-	(void)string_matrix;
-	return (vertex_matrix);
+	return (1);
 }
-// mettre tout ca dans des belles fonctions qui donnent une t_map
+
+int	close_window(t_vars *vars)
+{
+	mlx_destroy_window(vars->mlx, vars->win);
+	mlx_destroy_display(vars->mlx);
+	free(vars->mlx);
+	exit(0);
+	return (0);
+}
+
+int	key_hook(int keycode, t_vars *vars)
+{
+	if (keycode == 65307)
+	{
+		close_window(vars);
+		mlx_destroy_window(vars->mlx, vars->win);
+	}
+	return (0);
+}
 
 int	main(int argc, char **argv)
 {
-	t_vertex 	**v_matrix;
-	void		*mlx;
-	void		*mlx_win;
+	t_map		map;
 	t_data		img;
-	ssize_t		height;
-	ssize_t		width;
-	
-	height = 0;
-	width = 0;
-	
-	(void)argc;
+	t_vars		vars;
 
-	v_matrix = get_map(argv[1], &height, &width);
-	if (v_matrix == NULL)
+	if (argc != 2)
+		return(1);
+	if (get_map(argv[1], &map) == -1)
 		return (1);
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fdf project");
-	img.img = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	//print_vertex_matrix(v_matrix, width, height);
+	//img = malloc(sizeof(t_data));
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fdf project");
+	img.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	draw_map(&img, v_matrix, &height, &width);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	//faire une partie pour separer pour initialiser la window et l'image
+	draw_map(&img, map.v_matrix, &map.height, &map.width);
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
     // // // 60 FPS => 60 images par seconde => 1000ms / 60 = 16ms pour créer une image
-    mlx_loop(mlx);
-	free_vertex_matrix(v_matrix, height);
+	mlx_key_hook(vars.win, key_hook, &vars);
+	mlx_hook(vars.win, 17, 1L << 17, close_window, &vars);
+    mlx_loop(vars.mlx);
+	free_vertex_matrix(map.v_matrix, map.height);
     return (0);
 }

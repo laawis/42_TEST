@@ -44,13 +44,13 @@ t_vertex	**alloc_vertex_matrix(size_t width, size_t height)
 	t_vertex	**vertex_matrix;
 	size_t		i;
 
-	vertex_matrix = (t_vertex **)malloc(sizeof(t_vertex *) * (height));
+	vertex_matrix = (t_vertex **)malloc(sizeof(t_vertex *) * (height + 1));
 	if (vertex_matrix == NULL)
 		return (NULL);
 	i = 0;
 	while (i < height)
 	{
-		vertex_matrix[i] = ((t_vertex *)malloc(sizeof(t_vertex) * (width)));
+		vertex_matrix[i] = ((t_vertex *)malloc(sizeof(t_vertex) * (width + 1)));
 		if (vertex_matrix[i] == NULL)
 		{
 			free_vertex_matrix(vertex_matrix, i);
@@ -72,9 +72,10 @@ t_vertex	**fill_vertex_matrix(t_vertex **vertex_matrix, char ***string_matrix)
 		j = 0;
 		while (string_matrix[i][j] != NULL)
 		{
-			vertex_matrix[i][j].y = i;
-			vertex_matrix[i][j].x = j;
 			vertex_matrix[i][j].w = ft_atoi(string_matrix[i][j]);
+			vertex_matrix[i][j].y = 100 + (i * 50) - (vertex_matrix[i][j].w * 8);
+			vertex_matrix[i][j].x = 100 + (j * 50) + (i * 15);
+			vertex_matrix[i][j].color = 0x00FFFFFF;
 			j++;
 		}
 		i++;
