@@ -109,31 +109,30 @@ void	draw_line(const t_data *const data, t_vertex *v1, t_vertex *v2)
 
 }
 */
-
-void	draw_map(const t_data *const data, t_vertex **v_matrix, ssize_t *height, ssize_t *width)
+void	draw_map(const t_data *const data, t_map *map)
 {
 	int	i;
 	int	j;
 
 	//printf("width=%zd; height=%zd \n", *width, *height);
 	i = 0;
-	while (i < (*height))
+	while (i < (map->height))
 	{
 		j = 0;
-		while (j < (*width - 1))
+		while (j < (map->width - 1))
 		{
-			draw_line(data, v_matrix[i][j], v_matrix[i][j + 1]);
+			draw_line(data, map->v_matrix[i][j], map->v_matrix[i][j + 1]);
 			j++;			
 		}
 		i++;
 	}
 	i = 0;
-	while (i < (*height - 1))
+	while (i < (map->height - 1))
 	{
 		j = 0;
-		while (j < (*width))
+		while (j < (map->width))
 		{
-			draw_line(data, v_matrix[i][j], v_matrix[i + 1][j]);
+			draw_line(data, map->v_matrix[i][j], map->v_matrix[i + 1][j]);
 			j++;			
 		}
 		i++;

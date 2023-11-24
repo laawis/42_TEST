@@ -18,8 +18,8 @@
 # include <stdio.h>
 # include <libft.h>
 
-# define WINDOW_WIDTH	1920
-# define WINDOW_HEIGHT	1080
+# define WINDOW_WIDTH	1200
+# define WINDOW_HEIGHT	800
 
 # define MAP_HEIGHT_LIMIT	INT_MAX
 # define MAP_WIDTH_LIMIT INT_MAX
@@ -72,12 +72,13 @@ void		free_matrix_altitude(char ***matrix_altitude);
 void		draw_point(const t_data *const data, const t_vertex vertex);
 ssize_t		get_width(char ***matrix_altitude);
 t_vertex	**alloc_vertex_matrix(size_t width, size_t height);
-t_vertex	**fill_vertex_matrix(t_vertex **vertex_matrix, char ***string_matrix);
+void		fill_vmatrix(t_map *map, char ***string_matrix);
 void		print_vertex_matrix(t_vertex **const vertex_matrix, size_t width, size_t height);
 void		draw_line(const t_data *const data, t_vertex v1, t_vertex v2);
-void		draw_map(const t_data * const data, t_vertex **v_matrix, ssize_t *height, ssize_t *width);
+void		draw_map(const t_data *const data, t_map *map);
 void		my_mlx_pixel_put(const t_data *const data, const int x, const int y, const int color);
 int			close_window(t_vars *vars);
+int 		mouse_hook(int m_code, t_vars *vars);
 int			key_hook(int keycode, t_vars *vars);
 
 

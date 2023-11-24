@@ -25,6 +25,71 @@
 - Matrice 3x3 et 4x4
 - Algorithme de brensham (tracer des lignes)
 */
+static void	zoom_vertex(t_map *const map, t_vertex *const vertex)
+{
+	const int	zoom_x = (WINDOW_WIDTH / (map->width + map->height));
+	const int	zoom_y = (WINDOW_HEIGHT / (map->height + map->width));
+
+	vertex->x *= zoom_x;
+	vertex->y *= zoom_y;
+}
+
+static void	center_vertex(t_map *const map, t_vertex *const vertex)
+{
+	const int	zoom_x = (WINDOW_WIDTH / (map->width + map->height));
+	const int	zoom_y = (WINDOW_HEIGHT / (map->height + map->width));
+	const int	center_offset_x = WINDOW_WIDTH / 2 - ((map->width - 1) * zoom_x) / 2;
+	const int	center_offset_y = WINDOW_HEIGHT / 2 - ((map->height - 1) * zoom_y) / 2;
+
+	vertex->x += center_offset_x;
+	vertex->y += center_offset_y;
+}
+
+static void	zoom(t_map *const map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			zoom_vertex(map, &(map->v_matrix[i][j]));
+			j++;
+		}
+		i++;
+	}
+}
+
+static void	center(t_map *const map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			center_vertex(map, &(map->v_matrix[i][j]));
+			j++;
+		}
+		i++;
+	}
+}
+
+static void	transform_vmatrix(t_map *const map)
+{
+	zoom(map);
+	center(map);
+	// rotation();
+	// amplitude();
+	// color();
+}
+
 static int	get_map(char *const filename, t_map *map)
 {
 	char		***string_matrix;
@@ -40,7 +105,8 @@ static int	get_map(char *const filename, t_map *map)
 	map->v_matrix = alloc_vertex_matrix(map->width, map->height);
 	if (map->v_matrix == NULL)
 		return (-1);
-	fill_vertex_matrix(map->v_matrix, string_matrix);
+	fill_vmatrix(map, string_matrix);
+	transform_vmatrix(map);
 	free_matrix_altitude(string_matrix);
 	return (1);
 }
@@ -57,6 +123,16 @@ int	close_window(t_vars *vars)
 int	key_hook(int keycode, t_vars *vars)
 {
 	if (keycode == 65307)
+	{
+		close_window(vars);
+		mlx_destroy_window(vars->mlx, vars->win);
+	}
+	return (0);
+}
+// le mouse_hook me fait segfault !!!!!
+int	mouse_hook(int m_code, t_vars *vars)
+{
+	if (m_code == 1)
 	{
 		close_window(vars);
 		mlx_destroy_window(vars->mlx, vars->win);
@@ -80,11 +156,12 @@ int	main(int argc, char **argv)
 	vars.win = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fdf project");
 	img.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	//faire une partie pour separer pour initialiser la window et l'image
-	draw_map(&img, map.v_matrix, &map.height, &map.width);
+	//initialiser la window et l'image dans une fonction
+	draw_map(&img, &map);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
     // // // 60 FPS => 60 images par seconde => 1000ms / 60 = 16ms pour créer une image
 	mlx_key_hook(vars.win, key_hook, &vars);
+	mlx_mouse_hook(vars.win, mouse_hook, &vars);
 	mlx_hook(vars.win, 17, 1L << 17, close_window, &vars);
     mlx_loop(vars.mlx);
 	free_vertex_matrix(map.v_matrix, map.height);
