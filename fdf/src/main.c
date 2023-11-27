@@ -13,6 +13,7 @@
 #include <mlx.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <math.h>
 
 #include "fdf.h"
 #include "libft.h"
@@ -25,6 +26,73 @@
 - Matrice 3x3 et 4x4
 - Algorithme de brensham (tracer des lignes)
 */
+
+// static void	rotate_x_axis(t_vertex *vertex)
+// {
+// 	int	prev_y;
+
+// 	prev_y = vertex->y;
+// 	vertex->y = prev_y * cos(vertex->x) + vertex->w * sin(vertex->x);
+// 	vertex->w = prev_y * -sin(vertex->x) + vertex->w * cos(vertex->x);
+// }
+
+// static void	rotate_y_axis(t_vertex *vertex)
+// {
+// 	int	prev_x;
+
+// 	prev_x = vertex->x;
+// 	vertex->x = prev_x * cos(vertex->y) + vertex->w * sin(vertex->y);
+// 	vertex->w = prev_x * -sin(vertex->y) + vertex->w * cos(vertex->y);
+// }
+
+void	shift_map_from_center()
+	shift_map(map, -center->x, -center->y); // decale en haut a gauche le centre
+
+void	shift_map_to_center()
+	shift_map(map, center->x, center->y); // remet la map au centre
+
+// shift_map_from_center();
+// rotate();
+// shift_map_to_center();
+
+void	shift_map(t_map *map, float shift_x, float shift_y)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map->height)
+	{
+		j= 0;
+		while (j < map->width)
+		{
+			map->v->matrix[i][j].x += shift_x; 
+			map->v->matrix[i][j].y += shift_y
+			j++;
+		}
+		i++;
+	}
+}
+
+static void rotate_vertex(t_vertex *vertex)
+{
+	const double	theta = M_PI_4; // a mettre en define
+	const int		prev = vertex->x;
+
+	vertex->x = prev * cos(theta) - vertex->y * sin(theta);
+	vertex->y = vertex->y * cos(theta) + prev * cos(theta);
+}
+
+// static void	rotate_w_axis(t_vertex *vertex)
+// {
+// 	t_vertex	prev;
+
+// 	prev.x = vertex->x;
+// 	prev.y = vertex->y;
+// 	vertex->x = prev.x * cos(vertex->w) - prev.y * sin(vertex->w);
+// 	vertex->y = prev.x * sin(vertex->w) + prev.y * cos(vertex->w);
+// }
+
 static void	zoom_vertex(t_map *const map, t_vertex *const vertex)
 {
 	const int	zoom_x = (WINDOW_WIDTH / (map->width + map->height));
@@ -81,11 +149,32 @@ static void	center(t_map *const map)
 	}
 }
 
+static void	rotate(t_map *const map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			//rotate_x_axis(&(map->v_matrix[i][j]));
+			//rotate_y_axis(&(map->v_matrix[i][j]));
+			//rotate_w_axis(&(map->v_matrix[i][j]));
+			rotate_vertex(&(map->v_matrix[i][j]));
+			j++;
+		}
+		i++;
+	}
+}
+
 static void	transform_vmatrix(t_map *const map)
 {
 	zoom(map);
 	center(map);
-	// rotation();
+	rotate(map);
 	// amplitude();
 	// color();
 }
@@ -130,6 +219,7 @@ int	key_hook(int keycode, t_vars *vars)
 	return (0);
 }
 // le mouse_hook me fait segfault !!!!!
+// mlx_mouse_hook(vars.win, mouse_hook, &vars);
 int	mouse_hook(int m_code, t_vars *vars)
 {
 	if (m_code == 1)
