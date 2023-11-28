@@ -20,6 +20,8 @@
 
 # define WINDOW_WIDTH	1200
 # define WINDOW_HEIGHT	800
+# define WINCENTER_Y	WINDOW_WIDTH / 2
+# define WINCENTER_X	WINDOW_HEIGHT / 2
 
 # define MAP_HEIGHT_LIMIT	INT_MAX
 # define MAP_WIDTH_LIMIT INT_MAX
@@ -75,11 +77,14 @@ t_vertex	**alloc_vertex_matrix(size_t width, size_t height);
 void		fill_vmatrix(t_map *map, char ***string_matrix);
 void		print_vertex_matrix(t_vertex **const vertex_matrix, size_t width, size_t height);
 void		draw_line(const t_data *const data, t_vertex v1, t_vertex v2);
+//void		draw_line(const t_data *const data, t_vertex *v1, t_vertex *v2);
 void		draw_map(const t_data *const data, t_map *map);
 void		my_mlx_pixel_put(const t_data *const data, const int x, const int y, const int color);
 int			close_window(t_vars *vars);
 int 		mouse_hook(int m_code, t_vars *vars);
 int			key_hook(int keycode, t_vars *vars);
+// void	shift_map_from_center(t_map *map, int WINCENTER_X, int WINCENTER_Y);
+// void	shift_map_to_center(t_map *map, int WINCENTER_X, int WINCENTER_Y);
 
 
 #endif
