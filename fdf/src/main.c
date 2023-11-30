@@ -64,14 +64,14 @@ static void rotate_vertex(t_vertex *vertex)
 	const int		prev = vertex->x;
 
 	vertex->x = prev * cos(theta) - vertex->y * sin(theta);
-	vertex->y = vertex->y * cos(theta) + prev * sin(theta);
+	vertex->y = vertex->y * cos(theta) + prev * cos(theta);
 }
 
 
 static void	zoom_vertex(t_map *const map, t_vertex *const vertex)
 {
-	const int	zoom_x = 50;//(WINDOW_WIDTH / (map->width + map->height));
-	const int	zoom_y = 50;//(WINDOW_HEIGHT / (map->height + map->width));
+	const int	zoom_x = (WINDOW_WIDTH / (map->width + map->height));
+	const int	zoom_y = (WINDOW_HEIGHT / (map->height + map->width));
 
 	vertex->x *= zoom_x;
 	vertex->y *= zoom_y;
@@ -79,10 +79,10 @@ static void	zoom_vertex(t_map *const map, t_vertex *const vertex)
 
 static void	center_vertex(t_map *const map, t_vertex *const vertex)
 {
-	const int	zoom_x = 50;//(WINDOW_WIDTH / (map->width + map->height));
-	const int	zoom_y = 50;//(WINDOW_HEIGHT / (map->height + map->width));
-	const int	center_offset_x = (WINDOW_WIDTH / 2) - ((map->width - 1) * zoom_x) / 2;
-	const int	center_offset_y = (WINDOW_HEIGHT / 2) - ((map->height - 1) * zoom_y) / 2;
+	const int	zoom_x = (WINDOW_WIDTH / (map->width + map->height));
+	const int	zoom_y = (WINDOW_HEIGHT / (map->height + map->width));
+	const int	center_offset_x = WINDOW_WIDTH / 2 - ((map->width - 1) * zoom_x) / 2;
+	const int	center_offset_y = WINDOW_HEIGHT / 2 - ((map->height - 1) * zoom_y) / 2;
 
 	vertex->x += center_offset_x;
 	vertex->y += center_offset_y;
@@ -211,11 +211,6 @@ int	main(int argc, char **argv)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	//initialiser la window et l'image dans une fonction
 	draw_map(&img, &map);
-	// t_vertex v_array[] = {
-	// 	{.x=600,.y=30,.w=0,.color=0xff0000},
-	// 	{.x=600,.y=70,.w=0,.color=0xff0000}
-	// };
-	// draw_line(&img, v_array[0], v_array[1]);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
     // // // 60 FPS => 60 images par seconde => 1000ms / 60 = 16ms pour créer une image
 	mlx_key_hook(vars.win, key_hook, &vars);

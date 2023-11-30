@@ -89,7 +89,7 @@ LIBFT = $(DIR_LIBFT)/libft.a
 ###################
 
 CC = cc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -g3
 
 ifeq ($(debug), true)
 	CFLAGS += -fsanitize=address,undefined -g3

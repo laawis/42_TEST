@@ -32,42 +32,48 @@ void	draw_point(const t_data *const data, const t_vertex vertex)
 	}
 }
 
-// void	draw_line(const t_data *const data, t_vertex v1, t_vertex v2)
-// {
-// 	const int	dx = abs(v2.x - v1.x);
-// 	const int	sx = v1.x < v2.x ? 1 : -1;
-// 	const int	dy = -abs(v2.y - v1.y);
-// 	const int	sy = v1.y < v2.y ? 1 : -1;
-// 	int			error;
-// 	int 		e2;
-
-// 	//printf("v1{%d;%d;%d} v2{%d;%d;%d}", v1.x, v1.y, v1.w, v2.x,v2.y, v2.w);
-// 	error = dx + dy;
-// 	while (1)
-// 	{
-// 		draw_point(data, v1);
-// 		if (v1.x == v2.x && v1.y == v2.y)
-// 			break;
-// 		e2 = 2 * error;
-// 		if (e2 >= dy)
-// 		{
-// 			if (v1.x == v2.x)
-// 				break;
-// 			error += dy;
-// 			v1.x += sx;
-// 		}
-// 		if (e2 <= dx)
-// 		{
-// 			if (v1.y == v2.y)
-// 				break;
-// 			error += dx;
-// 			v1.y += sy;
-// 		}
-// 	}
-// }
-
-// Bresenham Joseph
 void	draw_line(const t_data *const data, t_vertex v1, t_vertex v2)
+{
+	int	dx;
+	int	sx;
+	int	dy;
+	int	sy;
+	int	error;
+	int e2;
+
+	//printf("v1{%d;%d;%d} v2{%d;%d;%d}", v1.x, v1.y, v1.w, v2.x,v2.y, v2.w);
+	dx = abs(v2.x - v1.x);
+	sx = v1.x < v2.x ? 1 : -1;
+	dy = -abs(v2.y - v1.y);
+	sy = v1.y < v2.y ? 1 : -1;
+	error = dx + dy;
+
+	while (1)
+	{
+		draw_point(data, v1);
+		if (v1.x == v2.x && v1.y == v2.y)
+			break;
+		e2 = 2 * error;
+		if (e2 >= dy)
+		{
+			if (v1.x == v2.x)
+				break;
+			error += dy;
+			v1.x += sx;
+		}
+		if (e2 <= dx)
+		{
+			if (v1.y == v2.y)
+				break;
+			error += dx;
+			v1.y += sy;
+		}
+	}
+}
+
+/*
+Bresenham Joseph
+void	draw_line(const t_data *const data, t_vertex *v1, t_vertex *v2)
 {
 	int	dx;
 	int	dy;
@@ -76,33 +82,33 @@ void	draw_line(const t_data *const data, t_vertex v1, t_vertex v2)
 	int	e;
 	int	e2;
 
-	// printf("v1{%d;%d;%d} v2{%d;%d;%d}\n", v1->x, v1->y, v1->w, v2->x,v2->y, v2->w);
+	printf("v1{%d;%d;%d} v2{%d;%d;%d}\n", v1->x, v1->y, v1->w, v2->x,v2->y, v2->w);
 
-	dx = abs(v2.x - v1.x);
-	dy = abs(v2.y - v1.y);
-	incx = v1.x < v2.x ? 1 : -1;
-	incy = v1.y < v2.y ? 1 : -1;
+	dx = abs(v2->x - v1->x);
+	dy = abs(v2->y - v1->y);
+	incx = v1->x < v2->x ? 1 : -1;
+	incy = v1->y < v2->y ? 1 : -1;
 	e = dx - dy;
 	
 	draw_point(data, v1);
-	while((v1.x != v2.x) || v1.y != v2.y)
+	while((v1->x != v2->x) || v1->y != v2->y)
 	{
 		e2 = e * 2;
 		if (e2 > -dy)
 		{
 			e -= dy;
-			v1.x += incx;
+			v1->x += incx;
 		}
 		if (e2 < dx)
 		{
 			e += dx;
-			v1.y += incy;
+			v1->y += incy;
 		}
 		draw_point(data, v1);
 	}
 
 }
-
+*/
 void	draw_map(const t_data *const data, t_map *map)
 {
 	int	i;
