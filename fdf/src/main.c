@@ -54,19 +54,36 @@ static void	shift_map_to_center(t_map *map, float x, float y) {
 	shift_map(map, y, x); // remet la map au centre
 }
 
-// shift_map_from_center();
-// rotate();
-// shift_map_to_center();
+// // shift_map_from_center();
+// // rotate();
+// // shift_map_to_center();
 
-static void rotate_vertex(t_vertex *vertex)
+// // static void rotate_vertex(t_map *map, t_vertex vertex)
+// // static void rotate_vertex(t_vertex *vertex)
+// // {
+// // 	const double	theta = M_PI_4; // a mettre en define
+// // 	const int		prev = vertex->x;
+
+// // 	vertex->x = prev * cos(theta) - vertex->y * sin(theta);
+// // 	vertex->y = vertex->y * cos(theta) + prev * sin(theta);
+// // 	// vertex->x = (((prev - vertex->y) * 2) - (vertex->y * 2));
+// // 	// vertex->y = (((vertex->y + prev) * 2) + (prev * 2));
+// // 	//vertex->x = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
+// // 	//vertex->y = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
+// // }
+
+ static void rotate_vertex(t_vertex *vertex)
 {
 	const double	theta = M_PI_4; // a mettre en define
-	const int		prev = vertex->x;
+	const int		prev_x = vertex->x;
 
-	vertex->x = prev * cos(theta) - vertex->y * sin(theta);
-	vertex->y = vertex->y * cos(theta) + prev * cos(theta);
+	vertex->x = prev_x * cos(theta) - vertex->y * sin(theta);
+	vertex->y = prev_x * sin(theta) + vertex->y * cos(theta);
+	// vertex->x = (((prev - vertex->y) * 2) - (vertex->y * 2));
+	// vertex->y = (((vertex->y + prev) * 2) + (prev * 2));
+	//vertex->x = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
+	//vertex->y = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
 }
-
 
 static void	zoom_vertex(t_map *const map, t_vertex *const vertex)
 {
@@ -210,7 +227,7 @@ int	main(int argc, char **argv)
 	img.img = mlx_new_image(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	//initialiser la window et l'image dans une fonction
-	draw_map(&img, &map);
+	draw_map(&img, map);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
     // // // 60 FPS => 60 images par seconde => 1000ms / 60 = 16ms pour créer une image
 	mlx_key_hook(vars.win, key_hook, &vars);

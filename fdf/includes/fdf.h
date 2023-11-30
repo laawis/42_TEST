@@ -75,7 +75,7 @@ t_vertex	**alloc_vertex_matrix(size_t width, size_t height);
 void		fill_vmatrix(t_map *map, char ***string_matrix);
 void		print_vertex_matrix(t_vertex **const vertex_matrix, size_t width, size_t height);
 void		draw_line(const t_data *const data, t_vertex v1, t_vertex v2);
-void		draw_map(const t_data *const data, t_map *map);
+void		draw_map(const t_data *const data, t_map map);
 void		my_mlx_pixel_put(const t_data *const data, const int x, const int y, const int color);
 int			close_window(t_vars *vars);
 int 		mouse_hook(int m_code, t_vars *vars);
