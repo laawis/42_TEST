@@ -26,6 +26,29 @@
 - Matrice 3x3 et 4x4
 - Algorithme de brensham (tracer des lignes)
 */
+static void	altitude_vertex(t_vertex *vertex)
+{
+	vertex->x += (vertex->w * 4);
+	//vertex->y += (vertex->w * 2);
+}
+
+static void	altitude(const t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			altitude_vertex(&map->v_matrix[i][j]);
+			++j;
+		}
+		++i;
+	}
+}
 
 static void	shift_map(t_map *map, float shift_y, float shift_x)
 {
@@ -54,11 +77,11 @@ static void	shift_map_to_center(t_map *map, float x, float y) {
 	shift_map(map, y, x); // remet la map au centre
 }
 
-// // shift_map_from_center();
-// // rotate();
-// // shift_map_to_center();
+// // // shift_map_from_center();
+// // // rotate();
+// // // shift_map_to_center();
 
-// // static void rotate_vertex(t_map *map, t_vertex vertex)
+// // // static void rotate_vertex(t_map *map, t_vertex vertex)
 // // static void rotate_vertex(t_vertex *vertex)
 // // {
 // // 	const double	theta = M_PI_4; // a mettre en define
@@ -72,13 +95,17 @@ static void	shift_map_to_center(t_map *map, float x, float y) {
 // // 	//vertex->y = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
 // // }
 
- static void rotate_vertex(t_vertex *vertex)
-{
-	const double	theta = M_PI_4; // a mettre en define
-	const int		prev_x = vertex->x;
 
-	vertex->x = prev_x * cos(theta) - vertex->y * sin(theta);
-	vertex->y = prev_x * sin(theta) + vertex->y * cos(theta);
+
+ static void rotate_vertex(t_vertex *vertex)
+{	
+	const double	theta = (M_PI / 180) * 20; // conversion en radian = (M_PI / 180) * (angle en degres)
+	const double	prev_x = vertex->x;
+	const double	prev_y = vertex->y;
+
+	vertex->x = round(prev_x * cos(theta) - prev_y * sin(theta));
+	vertex->y = round(prev_x * sin(theta) + prev_y * cos(theta));
+	
 	// vertex->x = (((prev - vertex->y) * 2) - (vertex->y * 2));
 	// vertex->y = (((vertex->y + prev) * 2) + (prev * 2));
 	//vertex->x = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
@@ -166,8 +193,9 @@ static void	transform_vmatrix(t_map *const map)
 	shift_map_from_center(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	rotate(map);
 	shift_map_to_center(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	// amplitude();
+	altitude(map);
 	// color();
+	
 }
 
 static int	get_map(char *const filename, t_map *map)
@@ -177,7 +205,7 @@ static int	get_map(char *const filename, t_map *map)
 	map->height = get_line_number(filename);
 	if (map->height < 0)
 		return (-1);
-	string_matrix = get_matrix_altitude(filename, map->height);
+	string_matrix = get_matrix_altitude(filename, map->height);       
 	//print_matrix_altitude(string_matrix);
 	map->width = get_width(string_matrix);
 	if (map->width < 0)
@@ -186,6 +214,7 @@ static int	get_map(char *const filename, t_map *map)
 	if (map->v_matrix == NULL)
 		return (-1);
 	fill_vmatrix(map, string_matrix);
+
 	transform_vmatrix(map);
 	free_matrix_altitude(string_matrix);
 	return (1);

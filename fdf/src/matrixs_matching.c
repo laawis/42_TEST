@@ -97,9 +97,9 @@ void	fill_vmatrix(t_map *map, char ***string_matrix)
 		{
 			map->v_matrix[i][j].w = ft_atoi(string_matrix[i][j]);
 										//      CENTER   HAUT                    |         // ZOOM                                  | // AMPLITUDE
-			map->v_matrix[i][j].y = i; //((WINDOW_HEIGHT - map->height) / 3) + i * (WINDOW_HEIGHT / (map->height + map->width)) - (map->v_matrix[i][j].w * 6);
-									   //       CENTER COTE GAUCHE 														  // |   ROTATION (POINT DE FUITE)
-			map->v_matrix[i][j].x = j; //((WINDOW_WIDTH - map->width) / 7) + j * (WINDOW_WIDTH / (map->width + map->height)) + (i * ((WINDOW_WIDTH / map->width) / 4));
+			map->v_matrix[i][j].y = i;//((WINDOW_HEIGHT - map->height) / 3) + i * (WINDOW_HEIGHT / (map->height + map->width)) - (map->v_matrix[i][j].w * 6); //i
+									   //       CENTER COTE GAUCHE 														  // |   ROTATION (POINT DE FUITE) // j
+			map->v_matrix[i][j].x = j;//((WINDOW_WIDTH - map->width) / 7) + j * (WINDOW_WIDTH / (map->width + map->height)) + (i * ((WINDOW_WIDTH / map->width) / 4));
 			map->v_matrix[i][j].color = 0x00FFFFFF;
 			j++;
 		}
