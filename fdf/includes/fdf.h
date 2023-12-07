@@ -41,9 +41,9 @@ typedef unsigned int uint;
 
 struct	s_vertex
 {
-	int		x;
-	int		y;
-	int		w;
+	double		x;
+	double		y;
+	double		z;
 	uint	color;
 };
 typedef struct	s_vertex t_vertex;

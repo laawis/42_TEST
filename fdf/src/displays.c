@@ -38,6 +38,7 @@ void	print_vertex_matrix(t_vertex **const vertex_matrix, size_t width, size_t he
 {
 	size_t	i;
 	size_t	j;
+	(void) vertex_matrix;
 
 	i = 0;
 	while (i < height)
@@ -47,7 +48,7 @@ void	print_vertex_matrix(t_vertex **const vertex_matrix, size_t width, size_t he
 		{
 			//ft_printf("{%d;%d;%d}", vertex_matrix[i][j].x, vertex_matrix[i][j].y, vertex_matrix[i][j].w );
 			//printf("\n");
-			printf("{%d;%d;%d}", vertex_matrix[i][j].x, vertex_matrix[i][j].y, vertex_matrix[i][j].w );
+			//printf("{%d;%d;%d}", vertex_matrix[i][j].x, vertex_matrix[i][j].y, vertex_matrix[i][j].w );
 			if (j + 1 < width)
 				printf(",");
 			j++;

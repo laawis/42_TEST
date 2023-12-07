@@ -26,31 +26,8 @@
 - Matrice 3x3 et 4x4
 - Algorithme de brensham (tracer des lignes)
 */
-static void	altitude_vertex(t_vertex *vertex)
-{
-	vertex->x += (vertex->w * 4);
-	//vertex->y += (vertex->w * 2);
-}
 
-static void	altitude(const t_map *map)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < map->height)
-	{
-		j = 0;
-		while (j < map->width)
-		{
-			altitude_vertex(&map->v_matrix[i][j]);
-			++j;
-		}
-		++i;
-	}
-}
-
-static void	shift_map(t_map *map, float shift_y, float shift_x)
+static void	shift_map(t_map *map, double shift_y, double shift_x)
 {
 	int	i;
 	int	j;
@@ -73,49 +50,71 @@ static void	shift_map_from_center(t_map *map, float x, float y) {
 	shift_map(map, -y, -x); // decale en haut a gauche le centre
 }
 
-static void	shift_map_to_center(t_map *map, float x, float y) {
+static void	shift_map_to_center(t_map *map, double x, double y) {
 	shift_map(map, y, x); // remet la map au centre
 }
 
-// // // shift_map_from_center();
-// // // rotate();
-// // // shift_map_to_center();
+static void rotate_z(t_vertex *v)
+{
+	const double	theta = M_PI / 180.0 * 45; // a mettre en define
+	double			cos_theta = cos(theta);
+	double			sin_theta = sin(theta);
+	const double		prev = v->x;
 
-// // // static void rotate_vertex(t_map *map, t_vertex vertex)
-// // static void rotate_vertex(t_vertex *vertex)
-// // {
-// // 	const double	theta = M_PI_4; // a mettre en define
-// // 	const int		prev = vertex->x;
-
-// // 	vertex->x = prev * cos(theta) - vertex->y * sin(theta);
-// // 	vertex->y = vertex->y * cos(theta) + prev * sin(theta);
-// // 	// vertex->x = (((prev - vertex->y) * 2) - (vertex->y * 2));
-// // 	// vertex->y = (((vertex->y + prev) * 2) + (prev * 2));
-// // 	//vertex->x = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
-// // 	//vertex->y = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
-// // }
-
-
-
- static void rotate_vertex(t_vertex *vertex)
-{	
-	const double	theta = (M_PI / 180) * 20; // conversion en radian = (M_PI / 180) * (angle en degres)
-	const double	prev_x = vertex->x;
-	const double	prev_y = vertex->y;
-
-	vertex->x = round(prev_x * cos(theta) - prev_y * sin(theta));
-	vertex->y = round(prev_x * sin(theta) + prev_y * cos(theta));
-	
-	// vertex->x = (((prev - vertex->y) * 2) - (vertex->y * 2));
-	// vertex->y = (((vertex->y + prev) * 2) + (prev * 2));
-	//vertex->x = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
-	//vertex->y = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
+	v->x = prev * cos_theta - v->y * sin_theta;
+	v->y = prev * sin_theta + v->y * cos_theta;
 }
+
+static void	rotate_x(t_vertex *v)
+{
+	const double	theta = M_PI / 180.0 * 57.4; // a mettre en define
+	double			cos_theta = cos(theta);
+	double			sin_theta = sin(theta);
+	const double		prev = v->y;
+
+	v->y = prev * cos_theta - v->z * sin_theta;
+	v->z = prev * sin_theta + v->z * cos_theta;
+}
+
+
+
+//  static void rotate_vertex_x(t_vertex *vertex)
+// {	
+// 	const double	theta = (M_PI / 180) * 45; // conversion en radian = (M_PI / 180) * (angle en degres)
+// 	const double	prev_x = vertex->x;
+// 	const double	prev_y = vertex->y;
+// 	//const double	prev_y = vertex->z;
+
+// 	vertex->x = round(prev_x * cos(theta) - prev_y * sin(theta));
+// 	vertex->y = round(prev_x * sin(theta) + prev_y * cos(theta));
+	
+// 	// vertex->x = (((prev - vertex->y) * 2) - (vertex->y * 2));
+// 	// vertex->y = (((vertex->y + prev) * 2) + (prev * 2));
+// 	//vertex->x = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
+// 	//vertex->y = vertex->y * ((WINDOW_WIDTH / map->width) / 4);
+// }
+
+// static void	zoom_vertex(t_vertex *const vertex)
+// {
+// 	const int	zoom = 10;
+
+// 	vertex->x *= zoom;
+// 	vertex->y *= zoom;
+// }
+// static void	center_vertex(t_map *map, t_vertex *const v)
+// {
+// 	const int	zoom = 20;
+// 	const int	center_offset_x = WINDOW_WIDTH / 2 - (map->width  - 1) * zoom / 2;
+// 	const int	center_offset_y = WINDOW_HEIGHT / 2 - (map->height  - 1) * zoom / 2;
+
+// 	v->x += center_offset_x;
+// 	v->y += center_offset_y;
+// }
 
 static void	zoom_vertex(t_map *const map, t_vertex *const vertex)
 {
-	const int	zoom_x = (WINDOW_WIDTH / (map->width + map->height));
-	const int	zoom_y = (WINDOW_HEIGHT / (map->height + map->width));
+	const int	zoom_x = WINDOW_WIDTH / ((map->width + map->height));
+	const int	zoom_y = WINDOW_HEIGHT / ((map->height + map->width));
 
 	vertex->x *= zoom_x;
 	vertex->y *= zoom_y;
@@ -123,8 +122,8 @@ static void	zoom_vertex(t_map *const map, t_vertex *const vertex)
 
 static void	center_vertex(t_map *const map, t_vertex *const vertex)
 {
-	const int	zoom_x = (WINDOW_WIDTH / (map->width + map->height));
-	const int	zoom_y = (WINDOW_HEIGHT / (map->height + map->width));
+	const int	zoom_x = WINDOW_WIDTH / ((map->width + map->height));
+	const int	zoom_y = WINDOW_HEIGHT / ((map->height + map->width));
 	const int	center_offset_x = WINDOW_WIDTH / 2 - ((map->width - 1) * zoom_x) / 2;
 	const int	center_offset_y = WINDOW_HEIGHT / 2 - ((map->height - 1) * zoom_y) / 2;
 
@@ -179,23 +178,28 @@ static void	rotate(t_map *const map)
 		j = 0;
 		while (j < map->width)
 		{
-			rotate_vertex(&(map->v_matrix[i][j]));
+			rotate_z(&(map->v_matrix[i][j]));
+			rotate_x(&(map->v_matrix[i][j]));
 			j++;
 		}
 		i++;
 	}
 }
 
+
+
 static void	transform_vmatrix(t_map *const map)
-{
+{	
+	//const double	xzoom = 10.0;
+	//rotate(map);
 	zoom(map);
-	center(map);
+	center(map); // j'ai du mal a bien comprendre la diff entre center et shift_to/from_center
 	shift_map_from_center(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	rotate(map);
+	// shift_map_to_center(map, WINDOW_WIDTH / 2 - (map->width * xzoom) / 2, WINDOW_HEIGHT / 2 - (map->height * xzoom) / 2);
 	shift_map_to_center(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	altitude(map);
+	// altitude(map);
 	// color();
-	
 }
 
 static int	get_map(char *const filename, t_map *map)
