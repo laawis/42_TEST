@@ -50,6 +50,28 @@ static void	shift_map_from_center(t_map *map, float x, float y) {
 	shift_map(map, -y, -x); // decale en haut a gauche le centre
 }
 
+static void get_max_z(t_map *map)
+{
+	int		i;
+	int		j;
+	double	tmp_max_z;
+
+	tmp_max_z = map->v_matrix[0][0].z;
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			if (map->v_matrix[i][j].z > tmp_max_z)
+				tmp_max_z = map->v_matrix[i][j].z;
+			j++;
+		}
+		i++;
+	}
+	map->max_z = tmp_max_z;
+}
+
 static void	shift_map_to_center(t_map *map, double x, double y) {
 	shift_map(map, y, x); // remet la map au centre
 }
@@ -71,7 +93,7 @@ static void	rotate_x(t_vertex *v)
 	double			cos_theta = cos(theta);
 	double			sin_theta = sin(theta);
 	const double		prev = v->y;
-
+						//    * 26 = valeurs au hasard pour scale z: trouver un rapport universel pour scale z avec la WINDOW_HEIGHT
 	v->y = (prev * cos_theta - (v->z * sin_theta) * 26);
 	v->z = (prev * sin_theta + (v->z * cos_theta) * 26);
 }
@@ -192,6 +214,8 @@ static void	transform_vmatrix(t_map *const map)
 {	
 	//const double	xzoom = 10.0;
 	//rotate(map);
+	get_max_z(map);
+	printf("%lf\n", map->max_z);
 	zoom(map);
 	center(map); // j'ai du mal a bien comprendre la diff entre center et shift_to/from_center
 	shift_map_from_center(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
