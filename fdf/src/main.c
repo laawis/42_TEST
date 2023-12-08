@@ -72,8 +72,8 @@ static void	rotate_x(t_vertex *v)
 	double			sin_theta = sin(theta);
 	const double		prev = v->y;
 
-	v->y = prev * cos_theta - v->z * sin_theta;
-	v->z = prev * sin_theta + v->z * cos_theta;
+	v->y = (prev * cos_theta - (v->z * sin_theta) * 26);
+	v->z = (prev * sin_theta + (v->z * cos_theta) * 26);
 }
 
 

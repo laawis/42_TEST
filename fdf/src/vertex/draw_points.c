@@ -23,12 +23,21 @@ void	my_mlx_pixel_put(const t_data *const data, const int x, const int y, const 
 
 // le premier const signifie que ce qui est pointe (valeur) est constant
 // 2ieme const signifie que la valeur du pointeur est constant
-void	draw_point(const t_data *const data, const t_vertex vertex)
+// void	draw_point(const t_data *const data, const t_vertex vertex)
+// {
+// 	if ((vertex.x <= WINDOW_WIDTH && vertex.x >= 0) && (vertex.y <= WINDOW_HEIGHT && vertex.y >= 0))
+// 	{
+// //		printf("pourquoi je dessine pas vertex X %d --- vertex Y %d ---- Vertex W %d ---- Vertex Color %d\n\n", vertex->x, vertex->y, vertex->w, vertex->color);
+// 		my_mlx_pixel_put(data, vertex.x, vertex.y, vertex.color);
+// 	}
+// }
+
+void	draw_point(const t_data *const data, const int x, const int y, const int color)
 {
-	if ((vertex.x <= WINDOW_WIDTH && vertex.x >= 0) && (vertex.y <= WINDOW_HEIGHT && vertex.y >= 0))
+	if ((x <= WINDOW_WIDTH && x >= 0) && (y <= WINDOW_HEIGHT && y >= 0))
 	{
 //		printf("pourquoi je dessine pas vertex X %d --- vertex Y %d ---- Vertex W %d ---- Vertex Color %d\n\n", vertex->x, vertex->y, vertex->w, vertex->color);
-		my_mlx_pixel_put(data, vertex.x, vertex.y, vertex.color);
+		my_mlx_pixel_put(data, x, y, color);
 	}
 }
 
@@ -84,8 +93,8 @@ static void	draw_vector(const t_data *const data, t_vertex v1, t_vertex v2)
 	{
 		x = round(v1.x + ((v2.x - v1.x) * ((float) i / pr)));
 		y = round(v1.y + ((v2.y - v1.y) * ((float) i / pr)));
-		printf("%d %d\n", x, y);
-		my_mlx_pixel_put(data, x, y, 0xFF0000);
+		//printf("%d %d\n", x, y);
+		draw_point(data, x, y, 0xFF0000);
 		i++;
 	}
 }

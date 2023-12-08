@@ -69,7 +69,7 @@ ssize_t		get_line_number(char *const filename);
 void		free_strings(char **string_array);
 void		free_vertex_matrix(t_vertex **vertex_matrix, size_t height);
 void		free_matrix_altitude(char ***matrix_altitude);
-void		draw_point(const t_data *const data, const t_vertex vertex);
+void		draw_point(const t_data *const data, const int x, const int y, const int color);
 ssize_t		get_width(char ***matrix_altitude);
 t_vertex	**alloc_vertex_matrix(size_t width, size_t height);
 void		fill_vmatrix(t_map *map, char ***string_matrix);
