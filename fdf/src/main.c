@@ -219,8 +219,9 @@ static void	transform_vmatrix(t_map *const map)
 	zoom(map);
 	center(map); // j'ai du mal a bien comprendre la diff entre center et shift_to/from_center
 	shift_map_from_center(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	//shift_map_from_center(map, ((WINDOW_WIDTH / 2) - (map->width / 2)), ((WINDOW_HEIGHT / 2) - (map->height / 2)));
 	rotate(map);
-	// shift_map_to_center(map, WINDOW_WIDTH / 2 - (map->width * xzoom) / 2, WINDOW_HEIGHT / 2 - (map->height * xzoom) / 2);
+	// shift_map_to_center(map, ((WINDOW_WIDTH / 2) - (map->width / 2)), ((WINDOW_HEIGHT / 2) - (map->height / 2)));
 	shift_map_to_center(map, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	// altitude(map);
 	// color();
